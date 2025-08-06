@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMG ProspecPro - Sistema de Prospecção Inteligente</title>
+    
+    <!-- Meta tags para SEO e compartilhamento -->
+    <meta name="description" content="Sistema inteligente de prospecção comercial para PMG Atacadista">
+    <meta property="og:title" content="PMG ProspecPro">
+    <meta property="og:description" content="Sistema de análise e prospecção de clientes">
+    <meta property="og:image" content="https://pmg.com.br/wp-content/uploads/2019/08/logo.png">
+    
+    <!-- CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.js">
+    <link href="./assets/css/style.css" rel="stylesheet">
+    <link href="./assets/css/components.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-gradient-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="https://pmg.com.br/wp-content/uploads/2019/08/logo.png" alt="PMG" height="35" class="me-2">
+                <span class="fw-bold">ProspecPro</span>
+            </a>
+            <div class="navbar-nav ms-auto">
+                <button class="btn btn-outline-light me-2" onclick="dashboard.show()">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </button>
+                <button class="btn btn-outline-light" onclick="competitors.show()">
+                    <i class="fas fa-users"></i> Concorrentes
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold animate__animated animate__fadeInLeft">
+                        PMG ProspecPro
+                    </h1>
+                    <p class="lead mb-4 animate__animated animate__fadeInLeft animate__delay-1s">
+                        Sistema Inteligente de Prospecção Comercial com IA
+                    </p>
+                    <div class="stats-grid animate__animated animate__fadeInUp animate__delay-2s">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalProspects">0</div>
+                            <div class="stat-label">Prospects Analisados</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="successRate">95%</div>
+                            <div class="stat-label">Taxa de Sucesso</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="avgResponse">2.3s</div>
+                            <div class="stat-label">Tempo Médio</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-container animate__animated animate__fadeInRight">
+                        <div class="card shadow-lg border-0">
+                            <div class="card-body p-4">
+                                <h3 class="card-title text-center mb-4">
+                                    <i class="fas fa-search text-primary"></i>
+                                    Análise de Prospect
+                                </h3>
+                                
+                                <form id="prospectForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">CNPJ *</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                                <input type="text" class="form-control" id="cnpj" 
+                                                       placeholder="00.000.000/0000-00" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Instagram</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                                                <input type="text" class="form-control" id="instagram" 
+                                                       placeholder="@usuario ou URL">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Facebook</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                                                <input type="text" class="form-control" id="facebook" 
+                                                       placeholder="URL da página">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Website</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fas fa-globe"></i></span>
+                                                <input type="url" class="form-control" id="website" 
+                                                       placeholder="https://site.com">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Cardápio (Opcional)</label>
+                                        <input type="file" class="form-control" id="menuFile" 
+                                               accept=".pdf,.html,.mhtml,.txt,.doc,.docx">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Texto do Cardápio (Opcional)</label>
+                                        <textarea class="form-control" id="menuText" rows="3" 
+                                                  placeholder="Cole o texto do cardápio aqui..."></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-lg w-100">
+                                        <i class="fas fa-magic me-2"></i>
+                                        <span id="btnText">Analisar com IA</span>
+                                        <div class="spinner-border spinner-border-sm ms-2 d-none" id="btnSpinner"></div>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="results-section d-none">
+        <div class="container py-5">
+            <!-- Progress Bar -->
+            <div class="progress mb-4" style="height: 8px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                     id="analysisProgress" style="width: 0%"></div>
+            </div>
+
+            <!-- Company Info -->
+            <div class="card mb-4 animate__animated animate__fadeInUp">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h4><i class="fas fa-building me-2"></i>Informações da Empresa</h4>
+                </div>
+                <div class="card-body" id="companyInfo">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+
+            <!-- AI Analysis -->
+            <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-1s">
+                <div class="card-header bg-gradient-info text-white">
+                    <h4><i class="fas fa-robot me-2"></i>Análise com IA</h4>
+                </div>
+                <div class="card-body" id="aiAnalysis">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Social Media Analysis -->
+            <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+                <div class="card-header bg-gradient-success text-white">
+                    <h4><i class="fas fa-share-alt me-2"></i>Análise das Redes Sociais</h4>
+                </div>
+                <div class="card-body" id="socialAnalysis">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Menu Analysis -->
+            <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-3s">
+                <div class="card-header bg-gradient-warning text-white">
+                    <h4><i class="fas fa-utensils me-2"></i>Análise do Cardápio</h4>
+                </div>
+                <div class="card-body" id="menuAnalysis">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+
+            <!-- ML Product Suggestions -->
+            <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-4s">
+                <div class="card-header bg-gradient-danger text-white">
+                    <h4><i class="fas fa-lightbulb me-2"></i>Sugestões Inteligentes de Produtos</h4>
+                </div>
+                <div class="card-body">
+                    <div id="productSuggestions" class="row">
+                        <!-- Preenchido dinamicamente -->
+                    </div>
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-lg" id="generateScript">
+                            <i class="fas fa-file-alt me-2"></i>Gerar Script de Vendas
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competitor Analysis -->
+            <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-5s">
+                <div class="card-header bg-gradient-secondary text-white">
+                    <h4><i class="fas fa-chart-line me-2"></i>Análise de Concorrentes</h4>
+                </div>
+                <div class="card-body" id="competitorAnalysis">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Sales Script -->
+            <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-6s">
+                <div class="card-header bg-gradient-dark text-white">
+                    <h4><i class="fas fa-microphone me-2"></i>Script de Vendas Personalizado</h4>
+                </div>
+                <div class="card-body" id="salesScript">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Modal -->
+    <div class="modal fade" id="dashboardModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-chart-bar me-2"></i>Dashboard de Prospects</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="dashboardContent">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Competitor Modal -->
+    <div class="modal fade" id="competitorModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-users me-2"></i>Análise de Concorrentes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="competitorContent">
+                    <!-- Preenchido dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer">
+        <!-- Toasts adicionados dinamicamente -->
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.8.162/pdf.min.js"></script>
+    
+    <!-- Configuration -->
+    <script src="./config/api-keys.js"></script>
+    
+    <!-- Utils -->
+    <script src="./assets/js/utils/validators.js"></script>
+    <script src="./assets/js/utils/cache.js"></script>
+    <script src="./assets/js/utils/error-handler.js"></script>
+    
+    <!-- APIs -->
+    <script src="./assets/js/apis/cnpj.js"></script>
+    <script src="./assets/js/apis/social.js"></script>
+    <script src="./assets/js/apis/ai.js"></script>
+    <script src="./assets/js/apis/maps.js"></script>
+    
+    <!-- Components -->
+    <script src="./assets/js/components/dashboard.js"></script>
+    <script src="./assets/js/components/competitors.js"></script>
+    <script src="./assets/js/components/ml-categorization.js"></script>
+    
+    <!-- Main App -->
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>
